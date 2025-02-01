@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Camera } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-primary/20 to-background overflow-hidden">
       <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-5 bg-repeat"></div>
@@ -17,20 +22,45 @@ const Hero = () => {
             Transform your living space using AR technology and AI-powered design recommendations. Visualize your dream home instantly.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white px-8 group"
-            >
-              Start Designing
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-primary text-primary hover:bg-primary/10"
-            >
-              View Gallery
-            </Button>
+            {user ? (
+              <>
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 group"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Start Designing
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-primary text-primary hover:bg-primary/10"
+                  onClick={() => signOut()}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 group"
+                  onClick={() => navigate("/auth")}
+                >
+                  Get Started
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-primary text-primary hover:bg-primary/10"
+                  onClick={() => navigate("/auth")}
+                >
+                  Sign In
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
